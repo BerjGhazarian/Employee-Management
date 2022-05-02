@@ -257,3 +257,21 @@ function addRole() {
           answers.newRole,
           answers.pickEmployee
         ];
+        db.query(sql, params, (err, result) => {
+            if (err) {
+              console.log(err)
+              return;
+            }
+            console.info(`updated employee in the database`)
+            mainMenu();
+          });
+        })
+      })
+    }) 
+  }
+  
+  function init() {
+    mainMenu();
+  }
+  
+  init();
