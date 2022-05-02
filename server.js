@@ -236,3 +236,24 @@ function addRole() {
       for (let j=0; j<result.length; j++) {
         allRoles.push({name: result[j].title, value: result[j].id})
       }
+      inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "pickEmployee",
+          message: "Which employee's role would you like to update?",
+          choices: employeeNames
+        },
+        {
+          type: "list",
+          name: "newRole",
+          message: "What role do you want to reassign for the selected employee?",
+          choices: allRoles
+        }
+    ])
+      .then(answers => {
+        const sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
+        const params = [
+          answers.newRole,
+          answers.pickEmployee
+        ];
