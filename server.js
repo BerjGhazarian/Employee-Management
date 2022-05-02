@@ -268,7 +268,7 @@ function addRole() {
         })
       })
     }) 
-  }
+  }}
   
   function init() {
     mainMenu();
