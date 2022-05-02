@@ -65,3 +65,56 @@ const db = mysql.createConnection(
       console.table(rows);
       mainMenu();
     });
+
+    function viewAllRoles() {
+       const sql = `SELECT er.id, er.title, er.salary, d.department_name AS department FROM employee_role er 
+       JOIN department d ON er.department_id = d.id`
+     
+       db.query(sql, (err, rows) => {
+         if (err) {
+           console.log(err);
+           return;
+         }
+         console.table(rows)
+         mainMenu();
+       })
+     }
+     function viewAllEmployees() {
+        const sql = `SELECT e.id, e.first_name, e.last_name, er.title AS role, er.salary, d.department_name AS department, 
+        m.first_name AS manager FROM employee e LEFT JOIN employee_role er ON e.role_id = er.id LEFT JOIN department d ON er.department_id = d.id LEFT JOIN 
+        employee m ON m.id = e.manager_id ORDER BY e.first_name`
+      
+        db.query(sql, (err, rows) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.table(rows)
+          mainMenu();
+        })
+      }
+      function addDepartment() {
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "addDept",
+              message: "What is the name of the department?",
+            },
+          ])
+          .then(answers => {
+            // need to send the answer into the department database
+            const sql = `INSERT INTO department(department_name) VALUES(?)`;
+            const params = answers.addDept;
+      
+            db.query(sql, params, (err, result) => {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              console.info(`added ${answers.addDept} to the database`);
+              mainMenu();
+            });
+          });
+      }
+      
