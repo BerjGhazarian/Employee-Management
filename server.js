@@ -31,3 +31,25 @@ const db = mysql.createConnection(
           ],
         },
       ])
+      .then(answers => {
+        switch (answers.viewOptions) {
+          case "View All Departments":
+            return viewAllDepts();
+          case "View All Roles":
+            return viewAllRoles();
+          case "View All Employees":
+            return viewAllEmployees();
+          case "Add Department":
+            return addDepartment();
+          case "Add Role":
+            return addRole();
+          case "Add Employee":
+            return addEmployee();
+          case "Update Employee Role":
+            return updateEmpRole();
+          default:
+            process.exit()
+        }
+      });
+  }
+  
