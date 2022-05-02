@@ -224,3 +224,15 @@ function addRole() {
       });
     });
   }
+  function updateEmpRole() {
+    const employeeNames = [];
+    db.query(`SELECT * FROM employee`, (err, result) => {
+      if (err) throw err;
+      for (let i=0; i<result.length; i++) {
+        employeeNames.push({name: result[i].first_name + ' ' + result[i].last_name, value: result[i].id})
+      }
+      const allRoles = [];
+      db.query(`SELECT id, title FROM employee_role`, (err, result) => {
+      for (let j=0; j<result.length; j++) {
+        allRoles.push({name: result[j].title, value: result[j].id})
+      }
