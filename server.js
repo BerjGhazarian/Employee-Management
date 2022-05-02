@@ -117,4 +117,48 @@ const db = mysql.createConnection(
             });
           });
       }
-      
+
+function addRole() {
+    const getDepartments = []
+    db.query(`SELECT department_name, id FROM department`, (err, result) => {
+      for (let i=0; i<result.length; i++) {
+        getDepartments.push({name: result[i].department_name, value: result[i].id});
+      }
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "roleName",
+          message: "What is the name of the role?",
+        },
+        {
+          type: "input",
+          name: "roleSalary",
+          message: "What is the salary of the role?",
+        },
+        {
+          type: "list",
+          name: "roleDepartment",
+          message: "Which department is the role?",
+          choices: getDepartments
+        },
+      ])
+      .then(answers => {
+        const sql = `INSERT INTO employee_role (title, salary, department_id) VALUES(?, ?, ?) `;
+        const params = [
+          answers.roleName,
+          answers.roleSalary,
+          answers.roleDepartment,
+        ];
+  
+        db.query(sql, params, (err, result) => {
+          if (err) {
+            console.log(err)
+            return;
+          }
+          console.info(`added ${answers.roleName} to the database`)
+          mainMenu();
+        });
+      });
+    })
+  }
