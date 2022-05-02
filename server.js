@@ -162,3 +162,65 @@ function addRole() {
       });
     })
   }
+  function addEmployee() {
+    const getTitle = [];
+    db.query(`SELECT er.id, er.title FROM employee_role er`, (err, result) => {
+      for (let i=0; i<result.length; i++) {
+        getTitle.push({name: result[i].title, value: result[i].id})
+      }
+      const getManager = ['none'];
+      db.query(`SELECT * FROM employee`, (err, result) => {
+        if (err) throw err;
+        for (let j=0; j<result.length; j++) {
+          getManager.push({name: result[j].first_name + ' ' + result[j].last_name, value: result[j].id})
+        }
+    
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "firstName",
+            message: "What is employee's first name?",
+          },
+          {
+            type: "input",
+            name: "lastName",
+            message: "What is employee's last name?",
+          },
+          {
+            type: "list",
+            name: "empRole",
+            message: "What is the employee's role?",
+            choices: getTitle
+          },
+          {
+            type: "list",
+            name: "empManager",
+            message: "What is the employee's manager?",
+            choices: getManager,
+            default: 'none'
+          }
+        ])
+        .then(answers => {
+          const sql = `INSERT INTO employee (first_name, last_name , role_id, manager_id) VALUES(?, ?, ?, ?)`;
+          if (answers.empManager === 'none') {
+            answers.empManager = null
+          }
+          const params = [
+            answers.firstName,
+            answers.lastName,
+            answers.empRole,
+            answers.empManager
+          ];
+          db.query(sql, params, (err, result) => {
+            if (err) {
+              console.log(err)
+              return;
+            }
+            console.info(`added ${answers.firstName} to the database`)
+            mainMenu();
+          });
+        });
+      });
+    });
+  }
