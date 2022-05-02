@@ -52,4 +52,16 @@ const db = mysql.createConnection(
         }
       });
   }
+
+  function viewAllDepts() {
+    const sql = `SELECT id AS id, department_name AS department FROM department ORDER 
+    BY department.department_name`;
   
+    db.query(sql, (err, rows) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.table(rows);
+      mainMenu();
+    });
