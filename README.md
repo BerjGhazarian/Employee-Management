@@ -14,6 +14,6 @@ User must clone this repository in order to use it. Also, User will need MySql w
 
 ## links
 
-Github Link :
+Github Link :  https://github.com/BerjGhazarian/Employee-Management
 
-Video Link : 
+Video Link :   https://drive.google.com/file/d/1WUKzQOptjS7TFNqFJEbIMWHfbDTJ_uoq/view 
